@@ -1,0 +1,9 @@
+version: '2'
+
+services:
+  utils:
+    image: prodigymike/mini-utils
+    stdin_open: true
+    tty: true
+    external_links:
+      - etcd/etcd:etcd

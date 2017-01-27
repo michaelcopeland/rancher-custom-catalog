@@ -1,0 +1,31 @@
+version: '2'
+
+.catalog:
+  name: "Etcd (MJC)"
+  version: 5.7
+  description: |
+    Etcd from Rancher's Catalog.
+  questions:
+    - variable: "cluster_name"
+      type: string
+      required: true
+      label: "Cluster Name"
+      description: "Name of the cluster"
+      default: "cluster1"
+services:
+  data:
+    retain_ip: true
+    scale: 1
+    start_on_create: true
+  etcd:
+    retain_ip: true
+    scale: 1
+    start_on_create: true
+    health_check:
+      healthy_threshold: 2
+      response_timeout: 3000
+      port: 2378
+      unhealthy_threshold: 2
+      interval: 5000
+      strategy: recreate
+      request_line: /health

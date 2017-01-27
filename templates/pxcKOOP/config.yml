@@ -1,0 +1,5 @@
+name: "Percona XtraDB Cluster (Koops)"
+description: |
+  Percona XtraDB Cluster
+version: 5.7.16-27-rancher1
+category: Databases

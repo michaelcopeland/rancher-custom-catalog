@@ -1,0 +1,9 @@
+.catalog:
+  name: "Mini Ubuntu"
+  version: 0.1
+  description: |
+    Mini Ubuntu
+utils:
+  scale: 1
+#  retain_ip: true
+  start_on_create: true

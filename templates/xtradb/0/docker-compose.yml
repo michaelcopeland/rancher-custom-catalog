@@ -1,0 +1,19 @@
+version: '2'
+
+services:
+  xtradb:
+#    image: percona/percona-xtradb-cluster:5.7.16
+    image: percona/percona-xtradb-cluster:latest
+    environment:
+      CLUSTER_NAME: "${cluster_name}"
+      MYSQL_ROOT_PASSWORD: "${mysql_root_password}"
+      XTRABACKUP_PASSWORD: "${pxc_sst_password}"
+      # Discovery service doesn't clear itself and doesn't work 100%. Will need to revisit.
+      # I've spent about 4 days on this crap.
+#      DISCOVERY_SERVICE: "${discovery_service}"
+      DISCOVERY_SERVICE: "etcd:2379"
+#      ETCD_HOST: "etcd:2379"
+      # Will just use this for the time being
+#      CLUSTER_JOIN: "${cluster_join}"
+    external_links:
+      - etcd/etcd:etcd

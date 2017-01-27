@@ -1,0 +1,17 @@
+xtradb:
+  image: percona/percona-xtradb-cluster:latest
+  networks:
+    - networkyyy
+  external_links:
+    - etcd-ha-etcd-1
+    - etcd-ha-etcd
+    - etcd-ha
+#  net: "container:etcd"
+  environment:
+      CLUSTER_NAME: "${cluster_name}"
+      MYSQL_ROOT_PASSWORD: "${mysql_root_password}"
+      XTRABACKUP_PASSWORD: "${pxc_sst_password}"
+      DISCOVERY_SERVICE: "${discovery_service}"
+      CLUSTER_JOIN: "${cluster_join}"
+  labels:
+    io.rancher.container.hostname_override: container_name

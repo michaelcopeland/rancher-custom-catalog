@@ -1,0 +1,5 @@
+name: "etcd (MJC)"
+description: |
+  Etcd
+version: 1.0
+category: Databases
