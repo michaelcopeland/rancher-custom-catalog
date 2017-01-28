@@ -1,5 +1,5 @@
-name: "Percona XtraDB Cluster 5.7 (MJC)"
+name: "Percona XtraDB Cluster 5.7 (percona)"
 description: |
-  Percona XtraDB Cluster 5.7 (MJC)
+  Percona XtraDB Cluster 5.7 (percona)
 version: 5.7
 category: Databases

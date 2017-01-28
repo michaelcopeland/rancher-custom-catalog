@@ -2,10 +2,10 @@ version: '2'
 
 services:
         percona-xtradb-cluster:
-          image: prodigymike/pxc-57:latest
+          image: perconalab/percona-xtradb-cluster:latest
           environment:
             MYSQL_ROOT_PASSWORD: secret
-            DISCOVERY_SERVICE: "etcd:2379"
+            DISCOVERY_SERVICE: 10.20.2.4:2379
             CLUSTER_NAME: Theistareykjarbunga
           networks:
             - Theistareykjarbunga_net
@@ -17,10 +17,8 @@ services:
             # bind mount my local my.cnf
             # - $PWD/my.cnf:/etc/my.cnf
           #command:
-          external_links:
-            - etcd/etcd:etcd
+
 
 networks:
   Theistareykjarbunga_net:
     driver: overlay
-#    test

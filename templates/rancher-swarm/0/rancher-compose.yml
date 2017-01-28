@@ -1,0 +1,8 @@
+.catalog:
+  name: "SwarmKit"
+  version: 0.0.1
+  description: |
+    SwarmKit 0.0.1
+swarm:
+#  scale: 1
+#  start_on_create: true

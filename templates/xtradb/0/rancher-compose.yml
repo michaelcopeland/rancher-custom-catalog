@@ -8,7 +8,7 @@
       type: string
       required: true
       label: "Cluster Name"
-      description: "Name of the cluster"
+      description: "Name of the cluster. Leave blank for standalone mode."
       default: "cluster1"
     - variable: "mysql_root_password"
       type: string
