@@ -17,7 +17,7 @@ spec:
 #        configMap:
 #          name: apacheconfigmap
       containers:
-      - name: apachehttps
+      - name: apache
         image: httpd:latest
 #        command: ["/home/auto-reload-nginx.sh"]
         # ports in the container

@@ -6,7 +6,7 @@
 apiVersion: v1
 kind: Pod
 metadata:
-  name: apache
+  name: apache-pod
   labels:
     app: apache
 spec:
