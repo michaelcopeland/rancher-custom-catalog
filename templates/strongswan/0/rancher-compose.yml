@@ -1,0 +1,27 @@
+.catalog:
+  name: "Strongswan"
+  version: 0.1
+  description: |
+    Strongswan 0.1
+  questions:
+    - variable: "vpn_user"
+      type: string
+      required: false
+      label: "Strongswan vpn user"
+      description: "Pick a name for the OVPN_DATA data volume container, it will be created automatically."
+      default: "openvpndirname"
+    - variable: "vpn_password"
+      type: string
+      required: false
+      label: "Strongswan user password"
+      description: "Pick a name for the OVPN_DATA data volume container, it will be created automatically."
+      default: "openvpndirname2"
+    - variable: "vpn_psk_key"
+      type: string
+      required: false
+      label: "Strongswan user psk key"
+      description: "Pick a name for the OVPN_DATA data volume container, it will be created automatically."
+      default: "openvpndirname3"
+strongswan:
+  scale: 1
+  start_on_create: true

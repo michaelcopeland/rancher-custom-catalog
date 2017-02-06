@@ -1,0 +1,21 @@
+# Services map a port on each cluster node to ports on one or more pods.
+# The mapping uses a selector key:value pair in the service, and the labels property of pods. Any pods whose labels match the service selector are made accessible through the service’s port
+# https://kubernetes.io/docs/user-guide/services/operations/
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: apachesvc # The name to give to this service
+  labels:
+    app: apache
+spec:
+  type: NodePort # Optional. If the type is LoadBalancer, sets up a network load balancer for your service.
+  # The ports to map. port is the service port to expose on the cluster IP.
+  # targetPort is the port to target on the pods that are part of this service
+  ports:
+  - port: 80
+    targetPort: 80
+    protocol: TCP
+    name: http
+  selector: # The label key:value pair that defines the pods to target
+    app: apache

@@ -1,0 +1,26 @@
+version: '2'
+
+services:
+  strongswan:
+    image: philplckthun/strongswan
+#    image: prodigymike/strongswan
+    environment:
+      VPN_USER: '${vpn_user}'
+      VPN_PASSWORD: '${vpn_password}'
+      VPN_PSK: '${vpn_psk_key}'
+    stdin_open: true
+    # net mode must be bridged or port binding will not happen!
+#    network_mode: bridge
+    tty: true
+    volumes:
+    - /dockervols/strongswan:/etc/strongswan
+    ports:
+    - 1500:500/udp
+    - 1500:500/tcp
+    - 14500:4500/udp
+    - 14500:4500/tcp
+    - 11701:1701/udp
+    - 11701:1701/tcp
+    privileged: true
+#    cap_add:
+#    - NET_ADMIN

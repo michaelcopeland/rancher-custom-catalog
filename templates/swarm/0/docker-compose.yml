@@ -1,9 +1,0 @@
-version: '2'
-
-services:
-  swarm:
-    image: rancher/swarmkit:v1.13-1
-#    stdin_open: true
-#    tty: true
-#    external_links:
-#      - etcd/etcd:etcd

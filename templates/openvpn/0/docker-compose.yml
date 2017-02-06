@@ -1,0 +1,14 @@
+version: '2'
+
+services:
+  openvpn:
+    image: kylemanna/openvpn
+    stdin_open: true
+    tty: true
+    cap_add:
+        - NET_ADMIN
+    volumes:
+        - /dockervols/openvpn:/etc/openvpn
+    ports:
+        - 1194:1194/udp
+    privileged: true

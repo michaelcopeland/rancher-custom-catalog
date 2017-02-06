@@ -1,0 +1,15 @@
+.catalog:
+  name: "OpenVPN1"
+  version: 0.1
+  description: |
+    OpenVPN 0.1
+  questions:
+    - variable: "openvpn_data"
+      type: string
+      required: true
+      label: "OpenVPN data dir name"
+      description: "Pick a name for the OVPN_DATA data volume container, it will be created automatically."
+      default: "openvpndirname"
+openvpn:
+  scale: 1
+  start_on_create: true
