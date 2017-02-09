@@ -1,0 +1,30 @@
+.catalog:
+  name: "Etcd"
+  version: "1.0.0"
+  description: ""
+  questions:
+#    - variable: "NODE_NAME"
+#      label: "Name of node"
+#      required: true
+#      default: "node-1"
+#      type: "string"
+#    - variable: "NODE_IP"
+#      label: "IP of node"
+#      required: false
+#      default: "10.0.1.1"
+#      type: "string"
+#    - variable: "DISCOVERY_TOKEN"
+#      label: "Discovery token url. Use 'curl https://discovery.etcd.io/new?size=3'"
+#      required: false
+#      default: ""
+#      type: "string"
+#    - variable: "ETCD_SERVER_ID"
+#      label: "Etcd server id"
+#      required: true
+#      default: ""
+#      type: "string"
+    - variable: "ETCD_REPLICAS"
+      label: "Etcd replicas"
+      required: true
+      default: "1"
+      type: "string"

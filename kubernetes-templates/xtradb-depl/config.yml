@@ -1,0 +1,4 @@
+name: "Percona XtraDB Cluster (No ProxySQL)"
+description: "Percona XtraDB Cluster (No ProxySQL)"
+version: 1.0.0
+category: Database

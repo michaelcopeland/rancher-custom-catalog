@@ -1,0 +1,30 @@
+.catalog:
+  name: "Percona XtraDB Cluster (VIP)"
+  version: "1.0.1"
+  description: ""
+  questions:
+    - variable: "REPLICAS"
+      label: "Number of replicas"
+      required: true
+      default: "2"
+      type: "int"
+    - variable: "CLUSTER_NAME"
+      label: "Set cluster name"
+      required: true
+      default: "cluster1"
+      type: "string"
+    - variable: "MYSQL_ROOT_PASSWORD"
+      label: "Percona root pass"
+      required: true
+      default: "lh53jh53jkh"
+      type: "string"
+    - variable: "XTRABACKUP_PASSWORD"
+      label: "xtrabackup password"
+      required: true
+      default: "Theistare"
+      type: "string"
+    - variable: "SERVICE_NAME"
+      label: "Service name"
+      required: true
+      default: "mysql"
+      type: "string"

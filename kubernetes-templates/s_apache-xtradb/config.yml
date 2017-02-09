@@ -1,0 +1,4 @@
+name: "Socialius: Apache + MySQL (v0.2)"
+description: "Apache & Percona XtraDB Cluster"
+version: 1.0.0
+category: Web

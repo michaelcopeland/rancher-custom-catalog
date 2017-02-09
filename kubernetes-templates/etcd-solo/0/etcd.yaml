@@ -1,0 +1,61 @@
+# From: https://github.com/kubernetes/kubernetes/blob/a3c00aadd5da91288cca856dabbefbc9f261be69/cluster/addons/dns/skydns-rc.yaml.in#L23-L48
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: etcd
+  labels:
+    app: etcd
+spec:
+  type: LoadBalancer
+#  clusterIP:
+  ports:
+  - port: 2379
+    targetPort: 2379
+    protocol: TCP
+    name: serverport
+  - port: 2380
+    targetPort: 2380
+    protocol: TCP
+    name: extraport
+  - port: 4001
+    targetPort: 4001
+    protocol: TCP
+    name: clientport
+  selector:
+    app: etcd
+---
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  name: etcd
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: etcd
+    spec:
+      containers:
+      - name: etcd
+        image: gcr.io/google_containers/etcd-amd64:2.2.1
+#        resources:
+        command:
+        - /usr/local/bin/etcd
+        - -data-dir
+        - /var/etcd/data
+        - -listen-client-urls
+#        - http://127.0.0.1:2379,http://127.0.0.1:4001
+        - http://${SERVER_LISTEN_IP}:2379,http://${SERVER_LISTEN_IP}:4001
+        - -advertise-client-urls
+#        - http://127.0.0.1:2379,http://127.0.0.1:4001
+        - http://${SERVER_LISTEN_IP}:2379,http://${SERVER_LISTEN_IP}:4001
+        - -initial-cluster-token
+        - skydns-etcd
+#        volumeMounts:
+#        - mountPath: /var/etcd/data
+#          name: etcd-storage
+#        volumes:
+#        - name: etcd-storage
+#          hostPath:
+#            path: /dockervols/etcd/standalone

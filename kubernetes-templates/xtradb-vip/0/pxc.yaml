@@ -1,0 +1,54 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: pxc
+  labels:
+    app: pxc
+spec:
+  type: LoadBalancer
+  ports:
+    - port: 3306
+      targetPort: 3306
+  selector:
+    app: pxc
+---
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  name: pxc
+app: pxc
+spec:
+  replicas: ${REPLICAS}
+  selector:
+    app: pxc
+  template:
+    metadata:
+      name: pxc
+      labels:
+        app: pxc
+    spec:
+      containers:
+      - name: percona-xtradb-cluster
+        image: prodigymike/percona-xtradb-cluster-vip
+        ports:
+        - containerPort: 3306
+        - containerPort: 4567
+        - containerPort: 4568
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          value: "${MYSQL_ROOT_PASSWORD}"
+        - name: DISCOVERY_SERVICE
+          value: "${DISCOVERY_SERVICE}"
+        - name: CLUSTER_NAME
+          value: "${CLUSTER_NAME}"
+        - name: XTRABACKUP_PASSWORD
+          value: "${XTRABACKUP_PASSWORD}"
+        - name: SERVICE_NAME
+          value: "${SERVICE_NAME}"
+        volumeMounts:
+        - name: mysql-persistent-storage
+          mountPath: /var/lib/mysql
+      volumes:
+      - name: mysql-persistent-storage
+        emptyDir: {}
+imagePullPolicy: Always

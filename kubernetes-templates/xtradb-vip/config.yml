@@ -1,0 +1,4 @@
+name: "Percona XtraDB Cluster (VIP)"
+description: "Percona XtraDB Cluster (VIP)"
+version: 1.0.1
+category: Database

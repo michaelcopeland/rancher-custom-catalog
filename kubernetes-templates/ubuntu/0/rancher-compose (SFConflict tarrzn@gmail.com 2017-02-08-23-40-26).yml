@@ -1,0 +1,10 @@
+.catalog:
+  name: "Mini Ubuntu"
+  version: "0.1"
+  description: ""
+#  questions:
+#    - variable: "ETCD_REPLICAS"
+#      label: "Etcd replicas"
+#      required: true
+#      default: "1"
+#      type: "string"

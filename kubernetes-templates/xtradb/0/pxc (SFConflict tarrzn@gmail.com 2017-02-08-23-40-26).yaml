@@ -1,0 +1,97 @@
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  name: pxc-rc
+  app: pxc-app
+spec:
+#  replicas: 3 # tells deployment to run N pods matching the template
+  replicas: ${REPLICAS} # tells deployment to run N pods matching the template
+  selector:
+    app: pxc-app
+  template: # create pods using pod definition in this template
+    metadata:
+      name: pxc
+      labels:
+        app: pxc-app
+    spec:
+      containers:
+      - name: percona-xtradb-cluster
+#        command: ["/add_dns.sh"]
+#        command:
+#        - /add_dns.sh
+        image: prodigymike/percona-xtradb-cluster
+        # ProdigyMike: Lets link w/ etcd
+        # Possibly not needed: http://stackoverflow.com/a/31768361
+        #external_links:
+        #- etcd/etcd:etcd
+        ports:
+        - containerPort: 3306
+        - containerPort: 4567
+        - containerPort: 4568
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          value: "${MYSQL_ROOT_PASSWORD}"
+        - name: CLUSTER_NAME
+          value: "${CLUSTER_NAME}"
+        - name: XTRABACKUP_PASSWORD
+          value: "${XTRABACKUP_PASSWORD}"
+        - name: SERVICE_NAME
+          value: "${SERVICE_NAME}"
+        volumeMounts:
+        - name: mysql-persistent-storage
+          mountPath: /var/lib/mysql
+      volumes:
+      - name: mysql-persistent-storage
+        emptyDir: {}
+#        imagePullPolicy: Always
+---
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  name: proxysql-rc
+  app: proxysql-app
+spec:
+  replicas: 1 # tells deployment to run N pods matching the template
+  selector:
+    front: proxysql
+  template: # create pods using pod definition in this template
+    metadata:
+      name: proxysql
+      labels:
+        app: pxc-app
+        front: proxysql
+    spec:
+      containers:
+      - name: proxysql
+        image: perconalab/proxysql
+        ports:
+        - containerPort: 3306
+        - containerPort: 6032
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          value: "${MYSQL_ROOT_PASSWORD}"
+        - name: CLUSTER_NAME
+          value: "${CLUSTER_NAME}"
+        - name: MYSQL_PROXY_USER
+          value: "proxyuser"
+        - name: MYSQL_PROXY_PASSWORD
+          value: "s3cret"
+#        - name: DISCOVERY_SERVICE
+#          value: "${ETCD_HOST}:4001"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: pxc-service
+  labels:
+    app: pxc-app
+spec:
+  ports:
+    - port: 3306
+      targetPort: 3306
+      name: "mysql"
+    - port: 6032
+      targetPort: 6032
+      name: "proxyadm"
+  selector:
+    front: proxysql

@@ -1,0 +1,153 @@
+# From: https://raw.githubusercontent.com/kubernetes/kubernetes.github.io/master/docs/admin/high-availability/etcd.yaml
+# Used with: https://kubernetes.io/docs/admin/high-availability/#clustering-etcd
+
+# https://kubernetes.io/docs/user-guide/services
+apiVersion: v1
+kind: Service
+# Set data for this service
+metadata:
+  name: etcd
+  labels:
+    app: etcd
+spec:
+  # Optional. NodePort/LoadBalancer. NodePort = Each node proxies that port. Set port via ports.nodePort. LoadBalancer = What you think it is.
+  type: LoadBalancer
+  # Ports to map. Port is the service port to expose on the cluster IP.
+  # targetPort is the port to target on the pods that are part of this service
+  ports:
+  - port: 4001
+    targetPort: 4001
+    protocol: TCP
+    name: http
+  # The label key:value pair that defines the pods to target
+  selector:
+    app: etcd
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: etcd-server
+  labels:
+    app: etcd
+spec:
+  hostNetwork: true
+  containers:
+#  - image: gcr.io/google_containers/etcd:2.0.9
+  - image: prodigymike/etcd-k8s
+    name: etcd-container
+#    command:
+#    - /usr/local/bin/etcd
+#    - --name
+#    - ${NODE_NAME}
+#    - --initial-advertise-peer-urls
+#    - http://${NODE_IP}:2380
+#    - --listen-peer-urls
+#    - http://${NODE_IP}:2380
+#    - --advertise-client-urls
+#    - http://${NODE_IP}:4001
+#    - --listen-client-urls
+#    - http://127.0.0.1:4001
+#    - --data-dir
+#    - /var/etcd/data
+#    - --discovery
+#    - ${DISCOVERY_TOKEN}
+    command:
+    - /opt/etcd/bin/config-and-run.sh
+    env:
+    - name: ETCD_SERVER_ID
+      value: "1"
+    ports:
+    - containerPort: 2380
+      hostPort: 2380
+      name: serverport
+    - containerPort: 4001
+      hostPort: 4001
+      name: clientport
+#    volumeMounts:
+#    - mountPath: /var/etcd
+#      name: varetcd
+#    - mountPath: /etc/ssl
+#      name: etcssl
+#      readOnly: true
+#    - mountPath: /usr/share/ssl
+#      name: usrsharessl
+#      readOnly: true
+#    - mountPath: /var/ssl
+#      name: varssl
+#      readOnly: true
+#    - mountPath: /usr/ssl
+#      name: usrssl
+#      readOnly: true
+#    - mountPath: /usr/lib/ssl
+#      name: usrlibssl
+#      readOnly: true
+#    - mountPath: /usr/local/openssl
+#      name: usrlocalopenssl
+#      readOnly: true
+#    - mountPath: /etc/openssl
+#      name: etcopenssl
+#      readOnly: true
+#    - mountPath: /etc/pki/tls
+#      name: etcpkitls
+#      readOnly: true
+
+#  - image: prodigymike/etcd-k8s
+#    name: etcd-container2
+#    command:
+#    - /opt/etcd/bin/config-and-run.sh
+#    env:
+#    - name: ETCD_SERVER_ID
+#      value: "2"
+#    ports:
+#    - containerPort: 2381
+#      hostPort: 2381
+#      name: serverport
+#    - containerPort: 4002
+#      hostPort: 4002
+#      name: clientport
+---
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  name: etcd-rc
+spec:
+#  replicas: 2
+  replicas: ${ETCD_REPLICAS}
+  template:
+    metadata:
+      labels:
+        app: etcd
+    spec:
+      containers:
+      - name: etcd-1
+        image: prodigymike/etcd-k8s
+        command: ["/opt/etcd/bin/config-and-run.sh"]
+        ports:
+        - containerPort: 4001
+        - containerPort: 7001
+        env:
+        - name: ETCD_SERVER_ID
+          value: "1"
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 80
+          initialDelaySeconds: 30
+          timeoutSeconds: 1
+#      - name: etcd-2
+#        image: prodigymike/etcd-k8s
+#        command: ["/opt/etcd/bin/config-and-run.sh"]
+#        ports:
+#        - containerPort: 4002
+#        - containerPort: 7002
+#        - containerPort: 400${ETCD_SERVER_ID}
+#        - containerPort: 700${ETCD_SERVER_ID}
+#        env:
+#        - name: ETCD_SERVER_ID
+#          value: "2"
+#        livenessProbe:
+#          httpGet:
+#            path: /
+#            port: 80
+#          initialDelaySeconds: 30
+#          timeoutSeconds: 1

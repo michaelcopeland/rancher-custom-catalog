@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: mini-ubuntu
+  labels:
+    name: mini-ubuntu
+spec:
+  containers:
+    - name: mini-ubuntu
+      image: prodigymike/mini-ubuntu
+      command: ["/bin/bash"]

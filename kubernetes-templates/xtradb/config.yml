@@ -1,0 +1,4 @@
+name: "Percona XtraDB Cluster"
+description: "Percona XtraDB Cluster"
+version: 1.0.1
+category: Database

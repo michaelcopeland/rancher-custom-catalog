@@ -1,0 +1,39 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: pxc-deployment
+spec:
+  replicas: ${REPLICAS}
+  template:
+    metadata:
+      labels:
+        app: pxc
+    spec:
+      containers:
+      - name: percona-server
+#        command: ["/add_dns.sh"]
+#        command:
+#        - /add_dns.sh
+        image: prodigymike/percona-xtradb-cluster
+        ports:
+        - containerPort: 3306
+        env:
+        - name: MYSQL_ALLOW_EMPTY_PASSWORD
+          value: "1"
+        - name: CLUSTER_NAME
+          value: "${CLUSTER_NAME}"
+        - name: XTRABACKUP_PASSWORD
+          value: "${XTRABACKUP_PASSWORD}"
+        - name: SERVICE_NAME
+          value: "${SERVICE_NAME}"
+#        - name: ETCD_HOST
+#          value: ""
+#        - name: DISCOVERY_SERVICE
+#          value: "${SERVICE_HOST_PREFIX}_SERVICE_HOST:2379"
+#          value: "${DISCOVERY_SERVICE}:2379"
+        volumeMounts:
+        - name: mysql-persistent-storage
+          mountPath: /var/lib/mysql
+      volumes:
+      - name: mysql-persistent-storage
+        emptyDir: {}
