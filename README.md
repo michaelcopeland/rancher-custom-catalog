@@ -1,8 +1,8 @@
 # Rancher Custom Catalog Template
 
-This is a custom template that I made for Rancher while using it with Docker.
+This is a custom template that I made for Rancher while using it with Docker and later Kubernetes.
 
-I hope that this is useful to someone out there looking to make a cool catalog like the ones that are built into Rancher.
+I hope this is useful to someone out there looking to make a cool catalog like the ones that are built into Rancher.
 
 ### Other Resources
 Official Rancher Catalog > https://github.com/rancher/rancher-catalog
