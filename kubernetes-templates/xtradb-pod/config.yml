@@ -1,4 +1,0 @@
-name: "Percona XtraDB Cluster (PODONLY, No ProxySQL)"
-description: "Percona XtraDB Cluster (PODONLY, No ProxySQL)"
-version: 1.0.0
-category: Database
